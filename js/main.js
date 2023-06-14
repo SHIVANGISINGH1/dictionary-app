@@ -1,15 +1,3 @@
-const backAudio = new Audio('media/ron-gelinas-chillout-lounge-where-will-i-go.mp3');
-let counter = 1;
-document.querySelector('.backMusic i').addEventListener('click', () => {
-    counter++;
-    if (counter % 2 == 0) {
-        backAudio.play();
-        backAudio.loop = true;
-    } else {
-        backAudio.pause();
-    }
-});
-
 const wrapper = document.querySelector('.wrapper'),
     searchInput = wrapper.querySelector('input'),
     synonyms = wrapper.querySelector('.synonyms .list'),
@@ -19,12 +7,10 @@ const wrapper = document.querySelector('.wrapper'),
 let audio;
 
 function data(result, word) {
-    // checking if the api response is empty or not
     if (result.title) {
         hintText.innerHTML = `Can't find the meaning of <span>"${word}"</span> ... Please, try to search for another word`;
     } else {
         console.log(result);
-        // if the api response is not empty then we are going to display the data
         wrapper.classList.add('active');
         let definitions = result[0].meanings[0].definitions[0],
             phonetics = `${result[0].meanings[0].partOfSpeech} /${result[0].phonetics[0].text}/`;
@@ -40,8 +26,6 @@ function data(result, word) {
             }
         }
 
-
-        // Getting only 7 results of synonyms
         synonyms.innerHTML = '';
         for (let i = 0; i < 7; i++) {
             if (result[0].meanings[0].synonyms[i] != undefined) {
@@ -67,8 +51,6 @@ function fetchApi(word) {
 
     let url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
 
-    // fetching api response from the url and returning it with parsing into js object and in another then
-    // method calling data function to display the data by passing api response & searched word as arguments
     fetch(url)
         .then(
             res => res.json()
